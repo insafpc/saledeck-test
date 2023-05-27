@@ -13,6 +13,26 @@
       </div>
       <a class="btn-transparant">Edit</a>
     </div>
+    <div class="cost-monthly">
+      <div>
+        <b>Eventually per month excl. btw</b>
+        <b>€ 10,00</b>
+      </div>
+    </div>
+    <div class="cost-onetime">
+      <div>
+        <p>Subtotal onetime costs excl. btw</p>
+        <p>€ 10,00</p>
+      </div>
+      <div>
+        <p><i>Discount name</i></p>
+        <p>€ 10,00</p>
+      </div>
+      <div>
+        <b>Onetime costs excl. btw</b>
+        <b>€ 10,00</b>
+      </div>
+    </div>
   </aside>
 </template>
 
@@ -22,6 +42,10 @@ aside {
   background: #FFFFFF;
   box-shadow: 1px 1px 3px rgba(51, 51, 51, 0.1);
   align-self: self-start;
+
+}
+
+.cart-item {
   padding: 20px;
 }
 
@@ -42,8 +66,28 @@ aside {
   color: #333333;
 }
 
-.cart-item--details p {
+aside p,
+aside b {
   margin: 6px 0;
   padding: 0;
+}
+
+.cost-monthly {
+  margin-bottom: 30px;
+}
+
+.cost-monthly,
+.cost-onetime {
+  background-color: #EDF6FB;
+  padding: 25px 20px;
+  font-size: 14px;
+  color: #333333;
+}
+
+.cost-monthly>div,
+.cost-onetime>div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
