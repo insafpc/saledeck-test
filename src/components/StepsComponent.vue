@@ -1,9 +1,45 @@
+<script setup lang="ts">
+import Toggle from '@vueform/toggle'
+import penIcon from './icons/PenIco.vue';
+import { ref } from 'vue';
+
+const value = ref(true);
+
+</script>
 <template>
     <aside>
         <div class="step active">Discounts</div>
         <div class="step-content">
             <div class="action">
                 <button class="btn btn-transparant">+ Add manual discount</button>
+            </div>
+            <div class="discount-item">
+                <p>Discount name</p>
+                <div class="discount-item-details">
+                    <penIcon />
+                    <p> - 25 % monthly first 3 months</p>
+                </div>
+                <Toggle v-model="value" />
+            </div>
+            <div class="discount-item">
+                <p>Discount name</p>
+                <div class="discount-item-details">
+                    <penIcon />
+                    <p> - 25 % monthly first 3 months</p>
+                </div>
+                <Toggle v-model="value" />
+            </div>
+            <div class="discount-item">
+                <p>Discount name</p>
+                <div class="discount-item-details">
+                    <penIcon />
+                    <p> - 25 % monthly first 3 months</p>
+                </div>
+                <Toggle v-model="value" />
+            </div>
+            <div class="footer-action">
+                <button class="btn btn-transparant">Previous</button>
+                <button class="btn btn-primary">Next</button>
             </div>
         </div>
         <div class="step">Klantgegevens</div>
@@ -38,6 +74,11 @@ aside {
     background-color: #fff;
 }
 
+.discount-item-details {
+    display: flex;
+    align-items: center;
+}
+
 .action {
     height: 82px;
     display: flex;
@@ -46,4 +87,24 @@ aside {
     padding: 28px;
     box-sizing: border-box;
 }
+
+.discount-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px;
+    box-sizing: border-box;
+    border-top: 1px solid #F3F3F5;
+
+}
+
+.footer-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px;
+    box-sizing: border-box;
+    border-top: 1px solid #F3F3F5;
+}
 </style>
+<style src="@vueform/toggle/themes/default.css"></style>

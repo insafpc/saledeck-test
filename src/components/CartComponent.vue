@@ -8,5 +8,6 @@
 aside {
   width: 350px;
   background-color: red;
+  align-self: self-start;
 }
 </style>

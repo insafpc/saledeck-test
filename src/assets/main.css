@@ -19,6 +19,10 @@ body {
   opacity: 0.8;
 }
 
+.btn-primary {
+  background-color: #26B7CD;
+}
+
 .btn-secondary {
   background-color: #767676;
 }
