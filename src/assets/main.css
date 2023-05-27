@@ -7,6 +7,30 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+:root {
+  --toggle-bg-on: #26B7CD;
+  --toggle-border-on: #26B7CD;
+  --toggle-border-off: #CACACA;
+  --toggle-bg-off: #CACACA;
+  --toggle-width: 60px;
+  --toggle-height: 25px;
+}
+
+.toggle {
+  border-radius: 0 !important;
+  border: 5px solid #26B7CD !important;
+}
+
+.toggle-off {
+  border: 5px solid #CACACA !important;
+}
+
+.toggle-handle {
+  border-radius: 0 !important;
+  height: 24px !important;
+  width: 24px !important;
+}
+
 .btn {
   height: 40px;
   padding: 0px 16px 0px 16px;
