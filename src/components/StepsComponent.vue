@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import Toggle from '@vueform/toggle'
 import penIcon from './icons/PenIco.vue';
-import { ref } from 'vue';
+import { discountDurationType, discountValueType } from '@/types/common';
+import { useDiscountsStore } from '@/stores/discounts'
 
-const value = ref(true);
+const discountsState = useDiscountsStore()
+const discounts = discountsState.discounts
 
 </script>
 <template>
@@ -13,29 +15,20 @@ const value = ref(true);
             <div class="action">
                 <button class="btn btn-transparant">+ Add manual discount</button>
             </div>
-            <div class="discount-item">
-                <p>Discount name</p>
+            <div class="discount-item" v-for="discount in discounts" :key="discount.id">
+                <p>{{ discount.description }}</p>
                 <div class="discount-item-details">
                     <penIcon />
-                    <p> - 25 % monthly first 3 months</p>
+                    <p>
+                        {{ discount.discountValueType === discountValueType.Percentage ? discount.discount + '%' : '€ ' +
+                            discount.discount }}
+                        <span v-if="discount.durationType === discountDurationType.Monthly">
+                            monthly first {{ discount.duration }} months
+                        </span>
+                        <span v-else>one time</span>
+                    </p>
                 </div>
-                <Toggle v-model="value" />
-            </div>
-            <div class="discount-item">
-                <p>Discount name</p>
-                <div class="discount-item-details">
-                    <penIcon />
-                    <p> - 25 % monthly first 3 months</p>
-                </div>
-                <Toggle v-model="value" />
-            </div>
-            <div class="discount-item">
-                <p>Discount name</p>
-                <div class="discount-item-details">
-                    <penIcon />
-                    <p> - 25 % monthly first 3 months</p>
-                </div>
-                <Toggle v-model="value" />
+                <Toggle v-model="discount.isEnabled" />
             </div>
             <div class="footer-action">
                 <button class="btn btn-transparant">Previous</button>
