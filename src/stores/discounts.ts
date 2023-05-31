@@ -38,6 +38,7 @@ export const useDiscountsStore = defineStore('discounts', () => {
       id: 4,
       discount: 11,
       discountValueType: discountValueType.Fixed,
+      durationType: discountDurationType.Onetime,
       duration: 3,
       price: 190,
       description: 'Hello',
@@ -107,9 +108,15 @@ export const useDiscountsStore = defineStore('discounts', () => {
 
   const monthlyActiveDiscounts = computed(() => {
     return discounts.value.filter((d) => {
-      d.durationType === discountDurationType.Monthly
+      return d.durationType === discountDurationType.Monthly && d.isEnabled
     })
   })
 
-  return { discounts, monthlyActiveDiscounts }
+  const onetimeActiveDiscounts = computed(() => {
+    return discounts.value.filter((d) => {
+      return d.durationType === discountDurationType.Onetime && d.isEnabled
+    })
+  })
+
+  return { discounts, monthlyActiveDiscounts, onetimeActiveDiscounts }
 })

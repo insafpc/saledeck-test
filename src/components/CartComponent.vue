@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import { useDiscountsStore } from '@/stores/discounts'
+
+const discountsState = useDiscountsStore()
+const productAmount = 1000;
+
+const dollars = new Intl.NumberFormat(`en-US`, {
+  currency: `EUR`,
+  style: 'currency',
+}).format(productAmount);
+
+</script>
 <template>
   <aside>
     <div class="cart-item">
@@ -5,7 +17,7 @@
       <h3>Overview</h3>
       <div class="cart-item--details">
         <p>Webasto Pure II laadpaal type 2</p>
-        <p>€ 1.0000,00</p>
+        <p>€ {{ productAmount }}</p>
       </div>
       <div class="cart-item--details">
         <p><i>Maandelijkse prijs</i></p>
@@ -18,16 +30,19 @@
         <b>Eventually per month excl. btw</b>
         <b>€ 10,00</b>
       </div>
+      {{ discountsState.monthlyActiveDiscounts }}
     </div>
     <div class="cost-onetime">
-      <div>
-        <p>Subtotal onetime costs excl. btw</p>
-        <p>€ 10,00</p>
-      </div>
-      <div>
-        <p><i>Discount name</i></p>
-        <p>€ 10,00</p>
-      </div>
+      <template v-if="discountsState.onetimeActiveDiscounts.length">
+        <div>
+          <p>Subtotal onetime costs excl. btw</p>
+          <p>€ {{ productAmount }}</p>
+        </div>
+        <div v-for="discount in discountsState.onetimeActiveDiscounts" :key="discount.id">
+          <p><i>{{ discount.description }}</i></p>
+          <p>€ 10,00</p>
+        </div>
+      </template>
       <div>
         <b>Onetime costs excl. btw</b>
         <b>€ 10,00</b>

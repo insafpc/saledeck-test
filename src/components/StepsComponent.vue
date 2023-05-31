@@ -5,7 +5,6 @@ import { discountDurationType, discountValueType } from '@/types/common';
 import { useDiscountsStore } from '@/stores/discounts'
 
 const discountsState = useDiscountsStore()
-const discounts = discountsState.discounts
 
 </script>
 <template>
@@ -15,7 +14,7 @@ const discounts = discountsState.discounts
             <div class="action">
                 <button class="btn btn-transparant">+ Add manual discount</button>
             </div>
-            <div class="discount-item" v-for="discount in discounts" :key="discount.id">
+            <div class="discount-item" v-for="discount in discountsState.discounts" :key="discount.id">
                 <p>{{ discount.description }}</p>
                 <div class="discount-item-details">
                     <penIcon />
