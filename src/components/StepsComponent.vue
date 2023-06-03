@@ -3,8 +3,18 @@ import Toggle from '@vueform/toggle'
 import penIcon from './icons/PenIco.vue';
 import { discountDurationType, discountValueType } from '@/types/common';
 import { useDiscountsStore } from '@/stores/discounts'
+import { ref } from 'vue';
 
 const discountsState = useDiscountsStore()
+const pagination = ref(3)
+
+function setPage(isForward: boolean) {
+    if (isForward) {
+        if ((pagination.value) < (discountsState.discounts.length)) return pagination.value = pagination.value + 3
+    } else {
+        if (pagination.value > 3) return pagination.value = pagination.value - 3
+    }
+}
 
 </script>
 <template>
@@ -14,8 +24,9 @@ const discountsState = useDiscountsStore()
             <div class="action">
                 <button class="btn btn-transparant">+ Add manual discount</button>
             </div>
-            <div class="discount-item" v-for="discount in discountsState.discounts" :key="discount.id">
-                <p>{{ discount.description }}</p>
+            <div class="discount-item" v-for="discount in discountsState.discounts.slice(pagination - 3, pagination)"
+                :key="discount.id">
+                <p>{{ discount.id }} {{ discount.description }}</p>
                 <div class="discount-item-details">
                     <penIcon />
                     <p> -
@@ -30,8 +41,8 @@ const discountsState = useDiscountsStore()
                 <Toggle v-model="discount.isEnabled" />
             </div>
             <div class="footer-action">
-                <button class="btn btn-transparant">Previous</button>
-                <button class="btn btn-primary">Next</button>
+                <button class="btn btn-transparant" @click="setPage(false)">Previous</button>
+                <button class="btn btn-primary" @click="setPage(true)">Next</button>
             </div>
         </div>
         <div class="step">Klantgegevens</div>
