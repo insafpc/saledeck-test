@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import Toggle from '@vueform/toggle'
 import penIcon from './icons/PenIco.vue';
+import AddNewComponent from './AddNewComponent.vue';
 import { discountDurationType, discountValueType } from '@/types/common';
 import { useDiscountsStore } from '@/stores/discounts'
 import { ref } from 'vue';
 
 const discountsState = useDiscountsStore()
-const pagination = ref(3)
+const pagination = ref(8)
+const showAddNew = ref(false)
 
 function setPage(isForward: boolean) {
     if (isForward) {
-        if ((pagination.value) < (discountsState.discounts.length)) return pagination.value = pagination.value + 3
+        if ((pagination.value) < (discountsState.discounts.length)) return pagination.value = pagination.value + 8
     } else {
-        if (pagination.value > 3) return pagination.value = pagination.value - 3
+        if (pagination.value > 8) return pagination.value = pagination.value - 8
     }
 }
 
@@ -22,11 +24,11 @@ function setPage(isForward: boolean) {
         <div class="step active">Discounts</div>
         <div class="step-content">
             <div class="action">
-                <button class="btn btn-transparant">+ Add manual discount</button>
+                <button class="btn btn-transparant" @click="showAddNew = true">+ Add manual discount</button>
             </div>
-            <div class="discount-item" v-for="discount in discountsState.discounts.slice(pagination - 3, pagination)"
+            <div class="discount-item" v-for="discount in discountsState.discounts.slice(pagination - 8, pagination)"
                 :key="discount.id">
-                <p>{{ discount.id }} {{ discount.description }}</p>
+                <p>{{ discount.description }}</p>
                 <div class="discount-item-details">
                     <penIcon />
                     <p> -
@@ -49,6 +51,8 @@ function setPage(isForward: boolean) {
         <div class="step">Productgegevens</div>
         <div class="step">Checkout</div>
     </aside>
+
+    <AddNewComponent @cancel="showAddNew = false" v-if="showAddNew" />
 </template>
   
 <style scoped>
