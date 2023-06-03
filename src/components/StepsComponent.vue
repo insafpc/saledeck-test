@@ -18,9 +18,9 @@ const discountsState = useDiscountsStore()
                 <p>{{ discount.description }}</p>
                 <div class="discount-item-details">
                     <penIcon />
-                    <p>
+                    <p> -
                         {{ discount.discountValueType === discountValueType.Percentage ? discount.discount + '%' : '€ ' +
-                            discount.discount }}
+                            discount.price }}
                         <span v-if="discount.durationType === discountDurationType.Monthly">
                             monthly first {{ discount.duration }} months
                         </span>

@@ -1,13 +1,29 @@
 <script setup lang="ts">
 import { useDiscountsStore } from '@/stores/discounts'
+import { useCurrency } from '@/composable/useCurrency'
+import { computed } from 'vue';
+import { discountDurationType, discountValueType } from '@/types/common';
 
 const discountsState = useDiscountsStore()
-const productAmount = 1000;
+const { eurCurrencyFormat } = useCurrency()
+const productAmount = 10000
+const monthlyAmount = 10
 
-const dollars = new Intl.NumberFormat(`en-US`, {
-  currency: `EUR`,
-  style: 'currency',
-}).format(productAmount);
+const oneTimeTotalDiscountAmount = computed(() => {
+  const discounts = discountsState.onetimeActiveDiscounts
+  const fixedAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Fixed).reduce((amount, discount) => amount + discount.price, 0);
+  const percentageAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Percentage).reduce((amount, discount) => amount + (productAmount * discount.discount / 100), 0);
+
+  return fixedAmt + percentageAmt;
+})
+
+const monthlyTotalDiscountAmount = computed(() => {
+  const discounts = discountsState.monthlyActiveDiscounts
+  const fixedAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Fixed).reduce((amount, discount) => amount + discount.price, 0);
+  const percentageAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Percentage).reduce((amount, discount) => amount + (productAmount * discount.discount / 100), 0);
+
+  return fixedAmt + percentageAmt;
+})
 
 </script>
 <template>
@@ -17,35 +33,40 @@ const dollars = new Intl.NumberFormat(`en-US`, {
       <h3>Overview</h3>
       <div class="cart-item--details">
         <p>Webasto Pure II laadpaal type 2</p>
-        <p>€ {{ productAmount }}</p>
+        <p>{{ eurCurrencyFormat(productAmount) }}</p>
       </div>
       <div class="cart-item--details">
         <p><i>Maandelijkse prijs</i></p>
-        <p>€ 10,00</p>
+        <p>{{ eurCurrencyFormat(monthlyAmount) }}</p>
       </div>
       <a class="btn-transparant">Edit</a>
     </div>
     <div class="cost-monthly">
+      <div v-for="discount in discountsState.monthlyActiveDiscounts" :key="discount.id">
+        <p><i>{{ discount.description }}</i></p>
+        <p v-if="discount.discountValueType === discountValueType.Fixed">- {{ eurCurrencyFormat(discount.price) }}</p>
+        <p v-else>- {{ eurCurrencyFormat(productAmount * discount.discount / 100) }}</p>
+      </div>
       <div>
         <b>Eventually per month excl. btw</b>
-        <b>€ 10,00</b>
+        <b>{{ eurCurrencyFormat(productAmount - monthlyTotalDiscountAmount) }}</b>
       </div>
-      {{ discountsState.monthlyActiveDiscounts }}
     </div>
     <div class="cost-onetime">
       <template v-if="discountsState.onetimeActiveDiscounts.length">
         <div>
           <p>Subtotal onetime costs excl. btw</p>
-          <p>€ {{ productAmount }}</p>
+          <p>{{ eurCurrencyFormat(productAmount) }}</p>
         </div>
         <div v-for="discount in discountsState.onetimeActiveDiscounts" :key="discount.id">
           <p><i>{{ discount.description }}</i></p>
-          <p>€ 10,00</p>
+          <p v-if="discount.discountValueType === discountValueType.Fixed">- {{ eurCurrencyFormat(discount.price) }}</p>
+          <p v-else>- {{ eurCurrencyFormat(productAmount * discount.discount / 100) }}</p>
         </div>
       </template>
       <div>
         <b>Onetime costs excl. btw</b>
-        <b>€ 10,00</b>
+        <b>{{ eurCurrencyFormat(productAmount - oneTimeTotalDiscountAmount) }}</b>
       </div>
     </div>
   </aside>

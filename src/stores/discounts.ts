@@ -7,7 +7,7 @@ export const useDiscountsStore = defineStore('discounts', () => {
     {
       id: 1,
       discount: 1,
-      discountValueType: discountValueType.Percentage,
+      discountValueType: discountValueType.Fixed,
       dduration: 1,
       durationType: discountDurationType.Monthly,
       price: 100,
@@ -16,10 +16,10 @@ export const useDiscountsStore = defineStore('discounts', () => {
     },
     {
       id: 2,
-      discount: 1,
+      discount: 2,
       discountValueType: discountValueType.Percentage,
       dduration: 1,
-      durationType: discountDurationType.Monthly,
+      durationType: discountDurationType.Onetime,
       price: 100,
       description: 'Hello',
       isEnabled: false
@@ -29,14 +29,14 @@ export const useDiscountsStore = defineStore('discounts', () => {
       discount: 1,
       discountValueType: discountValueType.Percentage,
       dduration: 1,
-      durationType: discountDurationType.Monthly,
+      durationType: discountDurationType.Onetime,
       price: 100,
       description: 'Hello',
       isEnabled: false
     },
     {
       id: 4,
-      discount: 11,
+      discount: 190,
       discountValueType: discountValueType.Fixed,
       durationType: discountDurationType.Onetime,
       duration: 3,
