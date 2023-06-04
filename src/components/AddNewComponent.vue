@@ -3,18 +3,32 @@ import { ref } from 'vue';
 import CheckIcon from './icons/CheckIcon.vue';
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
+import { discountDurationType, discountValueType } from '@/types/common';
+import { useDiscountsStore } from '@/stores/discounts'
 
 const isOnetime = ref(false)
+const discountValueTypeInput = ref('Percentage')
 const emit = defineEmits(['confirm', 'cancel'])
+const discountsState = useDiscountsStore()
 
 const schema = yup.object({
     discount: yup.number().required(),
     duration: yup.number().required().min(0),
+    discription: yup.string().required().min(3),
 });
 
 function onSubmit(values: any) {
     console.log(values);
-
+    discountsState.addItem({
+        id: discountsState.discounts.length + 1,
+        discountValueType: discountValueTypeInput.value === 'Percentage' ? discountValueType.Percentage : discountValueType.Fixed,
+        duration: values.duration,
+        durationType: isOnetime.value ? discountDurationType.Onetime : discountDurationType.Monthly,
+        discount: values.discount,
+        description: values.discription,
+        isEnabled: true
+    })
+    emit('cancel')
 }
 </script>
 
@@ -39,7 +53,13 @@ function onSubmit(values: any) {
             <div class="inputs">
                 <label>
                     Discount
-                    <Field name="discount" class="input-text" type="text" />
+                    <div class="discount-input">
+                        <select class="input-text" v-model="discountValueTypeInput">
+                            <option value="Percentage">%</option>
+                            <option value="Fixed">€</option>
+                        </select>
+                        <Field name="discount" class="input-text" type="text" />
+                    </div>
                     <ErrorMessage class="error" name="discount" />
                 </label>
                 <label>
@@ -48,12 +68,9 @@ function onSubmit(values: any) {
                     <ErrorMessage class="error" name="duration" />
                 </label>
                 <label>
-                    New price
-                    <input class="input-text" type="text" />
-                </label>
-                <label>
                     Discription
-                    <input class="input-text" type="text" />
+                    <Field name="discription" class="input-text" type="text" />
+                    <ErrorMessage class="error" name="discription" />
                 </label>
             </div>
             <div class="modal-action">
@@ -118,5 +135,13 @@ function onSubmit(values: any) {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
+}
+
+.discount-input {
+    display: flex;
+}
+
+.discount-input select {
+    width: 60px;
 }
 </style>

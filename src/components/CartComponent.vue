@@ -11,7 +11,7 @@ const monthlyAmount = 10
 
 const oneTimeTotalDiscountAmount = computed(() => {
   const discounts = discountsState.onetimeActiveDiscounts
-  const fixedAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Fixed).reduce((amount, discount) => amount + discount.price, 0);
+  const fixedAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Fixed).reduce((amount, discount) => amount + discount.discount, 0);
   const percentageAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Percentage).reduce((amount, discount) => amount + (productAmount * discount.discount / 100), 0);
 
   return fixedAmt + percentageAmt;
@@ -19,7 +19,7 @@ const oneTimeTotalDiscountAmount = computed(() => {
 
 const monthlyTotalDiscountAmount = computed(() => {
   const discounts = discountsState.monthlyActiveDiscounts
-  const fixedAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Fixed).reduce((amount, discount) => amount + discount.price, 0);
+  const fixedAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Fixed).reduce((amount, discount) => amount + discount.discount, 0);
   const percentageAmt = discounts.filter((discount) => discount.discountValueType === discountValueType.Percentage).reduce((amount, discount) => amount + (productAmount * discount.discount / 100), 0);
 
   return fixedAmt + percentageAmt;
@@ -44,7 +44,7 @@ const monthlyTotalDiscountAmount = computed(() => {
     <div class="cost-monthly">
       <div v-for="discount in discountsState.monthlyActiveDiscounts" :key="discount.id">
         <p><i>{{ discount.description }}</i></p>
-        <p v-if="discount.discountValueType === discountValueType.Fixed">- {{ eurCurrencyFormat(discount.price) }}</p>
+        <p v-if="discount.discountValueType === discountValueType.Fixed">- {{ eurCurrencyFormat(discount.discount) }}</p>
         <p v-else>- {{ eurCurrencyFormat(productAmount * discount.discount / 100) }}</p>
       </div>
       <div>
@@ -60,7 +60,8 @@ const monthlyTotalDiscountAmount = computed(() => {
         </div>
         <div v-for="discount in discountsState.onetimeActiveDiscounts" :key="discount.id">
           <p><i>{{ discount.description }}</i></p>
-          <p v-if="discount.discountValueType === discountValueType.Fixed">- {{ eurCurrencyFormat(discount.price) }}</p>
+          <p v-if="discount.discountValueType === discountValueType.Fixed">- {{ eurCurrencyFormat(discount.discount) }}
+          </p>
           <p v-else>- {{ eurCurrencyFormat(productAmount * discount.discount / 100) }}</p>
         </div>
       </template>

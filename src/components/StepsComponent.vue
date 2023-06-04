@@ -30,10 +30,9 @@ function setPage(isForward: boolean) {
                 :key="discount.id">
                 <p>{{ discount.description }}</p>
                 <div class="discount-item-details">
-                    <penIcon />
                     <p> -
                         {{ discount.discountValueType === discountValueType.Percentage ? discount.discount + '%' : '€ ' +
-                            discount.price }}
+                            discount.discount }}
                         <span v-if="discount.durationType === discountDurationType.Monthly">
                             monthly first {{ discount.duration }} months
                         </span>
